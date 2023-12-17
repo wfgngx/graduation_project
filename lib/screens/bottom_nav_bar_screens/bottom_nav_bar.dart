@@ -1,10 +1,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/screens/bottom_nav_bar_screens/explore_cars_screen/select_buy_or_rent.dart';
 import 'package:graduation_project/screens/bottom_nav_bar_screens/home.dart';
 import 'package:graduation_project/screens/take_a_photo.dart';
 import 'package:graduation_project/screens/user_cars_screen.dart';
+import 'package:graduation_project/utils/colors/app_colors.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -15,9 +17,9 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   List<Widget> bottomNavBarScreens = [
-    HomeScreen(),
+    const HomeScreen(),
     const Camera(),
-    SelectBuyOrRent()
+    const SelectBuyOrRent()
   ];
 
   int selectedScreen = 0;
@@ -26,15 +28,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'App Name',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: Text('CARIFY',
+              style: GoogleFonts.aBeeZee(
+                  letterSpacing: 4, fontSize: 22, fontWeight: FontWeight.bold)),
           foregroundColor: Colors.white,
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: secondaryColor,
         ),
         drawer: Drawer(
             backgroundColor: const Color.fromRGBO(39, 55, 77, 1.0),
@@ -49,7 +48,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       backgroundImage: const AssetImage(
                           'assets/images/circle_avatar_logIn_img.jpg'),
                     ),
-                    // SizedBox(height: 12.h,),
                     const Text(
                       '01204154971',
                       style: TextStyle(color: Colors.white30),
@@ -61,9 +59,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     )
                   ],
                 )),
-                  ListTile(
+                ListTile(
                   onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => const UserCarsScreen(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserCarsScreen(),
+                        ));
                   },
                   leading: const Icon(
                     Icons.car_rental,

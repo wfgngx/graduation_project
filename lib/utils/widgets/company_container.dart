@@ -10,13 +10,14 @@ class CompanyContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.w,
-      height: 90.h,
+      width: 120.w,
+      height: 120.h,
       decoration: const BoxDecoration(
         color: Colors.white10,
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
             img,
@@ -26,10 +27,11 @@ class CompanyContainer extends StatelessWidget {
           ),
           Text(
             brandName,
-            style: const TextStyle(
-               color: Colors.white,fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
-          SizedBox(height: 5,)
+          const SizedBox(
+            height: 5,
+          )
         ],
       ),
     );
