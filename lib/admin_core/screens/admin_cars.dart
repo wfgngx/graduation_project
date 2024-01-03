@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/admin_core/network/car_apis.dart';
 import 'package:graduation_project/admin_core/screens/add_car_screen.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
+import 'package:provider/provider.dart';
+import '../../Provider/FireBase/firebase_function.dart';
 import '../../api/view/car_api.dart';
 import '../../model/car_model.dart';
 import '../widgets/models_list_view.dart';
@@ -19,7 +21,6 @@ class AdminModelsScreen extends StatefulWidget {
 }
 
 class _AdminModelsScreenState extends State<AdminModelsScreen> {
-  // final TextEditingController _searchController = TextEditingController();
   final List<String> dropDownListItems = ['Date', 'Price', 'Sales'];
   String defaultItemDropDown = "Sales";
   final TextEditingController carNameController = TextEditingController();
@@ -45,7 +46,10 @@ class _AdminModelsScreenState extends State<AdminModelsScreen> {
         limit: limit,
         offset: offset,
         brand: widget.brandName,
-        sort: defaultItemDropDown.toLowerCase());
+        sort: defaultItemDropDown.toLowerCase(),
+        token: Provider.of<MyProvider>(context, listen: false).myToken.isEmpty
+            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+            : Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       myCars = carData;
       isFirstLoadRunning = false;
@@ -151,7 +155,7 @@ class _AdminModelsScreenState extends State<AdminModelsScreen> {
                               _showAlertDialog(
                                   myCars[index].id,
                                   myCars[index].name,
-                                  myCars[index].price.toString());
+                                  myCars[index].avgPrice.toString());
                             },
                             child: ModelListView(
                               modelName: myCars[index].name,

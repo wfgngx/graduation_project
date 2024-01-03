@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/api/user/user_apis.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
+import '../Provider/FireBase/firebase_function.dart';
 import '../admin_core/widgets/user_image_picker.dart';
 import '../model/user_cars.dart';
 import '../utils/widgets/brand_container.dart';
@@ -54,10 +56,15 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
   }
 
   void getCars() async {
-    List<UserCars> test = await UserApis().getCars();
+    print(
+        'My token is ${Provider.of<MyProvider>(context, listen: false).myToken}');
+    List<UserCars> test = await UserApis().getPrivateCars(
+        Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       cars = test;
     });
+    print(
+        'My token is ${Provider.of<MyProvider>(context, listen: false).myToken}');
   }
 
   @override
@@ -145,14 +152,35 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: phone,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter your Phone Number",
                           hintStyle: TextStyle(color: Colors.white30),
                         ),
+                        controller: phone,
+                      ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      Divider(
+                        indent: 30.w,
+                        endIndent: 30.w,
                       ),
                       SizedBox(
                         height: 8.h,
@@ -175,14 +203,28 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                       TextField(
-                        controller: brand,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car Brand",
                           hintStyle: TextStyle(color: Colors.white30),
                         ),
+                        controller: brand,
                       ),
                       SizedBox(
                         height: 8.h,
@@ -196,8 +238,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: carName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car name",
@@ -216,8 +272,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: price,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car Price",
@@ -236,8 +306,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: distance,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car Distance",
@@ -256,8 +340,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: transmission,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Transmission",
@@ -276,8 +374,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: duration,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Duration",
@@ -296,8 +408,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: fuel,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Fuel",
@@ -316,8 +442,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: location,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.streetAddress,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car Location",
@@ -336,8 +476,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: city,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car City",
@@ -356,8 +510,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: description,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Enter car Description",
@@ -376,8 +544,22 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: type,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                           hintText: "Sell or Rent",
@@ -396,11 +578,25 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                       ),
                       TextField(
                         controller: year,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        keyboardType: TextInputType.datetime,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
-                          hintText: "Enter your Phone Number",
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                              borderSide: BorderSide(color: Colors.white)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          hintText: "Enter car model year",
                           hintStyle: TextStyle(color: Colors.white30),
                         ),
                       ),
@@ -433,7 +629,17 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                                             carCity: city.text,
                                             carLocation: location.text,
                                             carDescription: description.text,
-                                            image: images)
+                                            image: images,
+                                            token: Provider.of<MyProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .myToken
+                                                    .isEmpty
+                                                ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                                                : Provider.of<MyProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .myToken)
                                         .then((value) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
@@ -479,6 +685,7 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                     itemBuilder: (context, index) => InkWell(
                         onLongPress: () => _showAlertDialog(cars[index].id),
                         child: ModelContainer(
+                            fuel: cars[index].fuel,
                             speed: 'speed',
                             image: cars[index].images.isNotEmpty
                                 ? cars[index].images[0].secureUrl
@@ -515,7 +722,16 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {
-                await UserApis().deleteCar(id).then((value) {
+                await UserApis()
+                    .deleteCar(
+                        id,
+                        Provider.of<MyProvider>(context, listen: false)
+                                .myToken
+                                .isEmpty
+                            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                            : Provider.of<MyProvider>(context, listen: false)
+                                .myToken)
+                    .then((value) {
                   print(id);
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Car Deleted Successfully")));
@@ -661,7 +877,15 @@ class _UserCarsScreenState extends State<UserCarsScreen> {
                                     modelYear: '2002',
                                     type: 'sell',
                                     id: id,
-                                    userPhone: '0120415777')
+                                    userPhone: '0120415777',
+                                    token: Provider.of<MyProvider>(context,
+                                                listen: false)
+                                            .myToken
+                                            .isEmpty
+                                        ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                                        : Provider.of<MyProvider>(context,
+                                                listen: false)
+                                            .myToken)
                                 .then((value) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(

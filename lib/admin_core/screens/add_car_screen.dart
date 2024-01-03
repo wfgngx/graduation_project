@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/admin_core/network/car_apis.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import '../../Provider/FireBase/firebase_function.dart';
 import '../../api/view/car_api.dart';
 import '../../model/car_model.dart';
 
@@ -56,7 +58,12 @@ class _AddCarScreenState extends State<AddCarScreen> {
   void fetchCars() async {
     List<CarModel> carData = await CarApi().fetchCars(
       limit: 20,
-      offset: 0,
+      offset: 0, token:  Provider.of<MyProvider>(context, listen: false)
+        .myToken
+        .isEmpty
+        ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+        : Provider.of<MyProvider>(context, listen: false)
+        .myToken,
     );
     setState(() {
       myCars = carData;

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/screens/models.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
+import 'package:provider/provider.dart';
 
+import '../Provider/FireBase/firebase_function.dart';
 import '../api/view/brand_api.dart';
 import '../model/brand_model.dart';
 import '../utils/widgets/company_container.dart';
@@ -73,7 +75,12 @@ class _BrandsState extends State<Brands> {
   }
 
   void fetchBrands() async {
-    List<BrandModel> brandData = await BrandApi().getAllBrands();
+    List<BrandModel> brandData = await BrandApi().getAllBrands(Provider.of<
+                MyProvider>(context, listen: false)
+            .myToken
+            .isEmpty
+        ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+        : Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       myBrands = brandData;
     });
@@ -117,7 +124,14 @@ class _BrandsState extends State<Brands> {
                             crossAxisCount: 2),
                     itemBuilder: (context, index) {
                       return FutureBuilder(
-                        future: BrandApi().getAllBrands(),
+                        future: BrandApi().getAllBrands(Provider.of<MyProvider>(
+                                    context,
+                                    listen: false)
+                                .myToken
+                                .isEmpty
+                            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                            : Provider.of<MyProvider>(context, listen: false)
+                                .myToken),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -143,6 +157,7 @@ class _BrandsState extends State<Brands> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ModelsScreen(
+                                              image: myBrands[index].logo,
                                               brandName: myBrands[index].name),
                                         ));
                                   },

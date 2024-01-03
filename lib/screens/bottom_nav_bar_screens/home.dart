@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gap/gap.dart';
 import 'package:graduation_project/api/view/brand_api.dart';
 import 'package:graduation_project/screens/brands_screen.dart';
@@ -7,10 +8,15 @@ import 'package:graduation_project/screens/model_details_screen.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
 import 'package:graduation_project/utils/widgets/brand_container.dart';
 import 'package:graduation_project/utils/widgets/home_screen_widgets/search_bar_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../Provider/FireBase/firebase_function.dart';
 import '../../api/view/car_api.dart';
 import '../../model/brand_model.dart';
 import '../../model/car_model.dart';
 import '../../utils/strings.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import '../../utils/widgets/company_container.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,11 +32,24 @@ class _HomeScreenState extends State<HomeScreen> {
   String defaultBrand = 'AUDI';
   List<BrandModel> myBrands = [];
   List<CarModel> myCars = [];
-  List<CarModel> searchedCars = [];
+  // List<CarModel> searchedCars = [];
   int limit = 5;
   bool isLoading = false;
   bool isLoaded = false;
+  bool hasData = false;
+  bool search = false;
+  final TextEditingController searchController = TextEditingController();
+  List<CarModel> searchCars = [];
+  // final bool _slowAnimations = true;
 
+  // if (_slowAnimations) async {
+  // await Future<void>.delayed(const Duration(milliseconds: 300));
+  // }
+  // timeDilation = _slowAnimations ? 20.0 : 1.0;
+  // },
+  // title: const Text('Slow animations'),
+  // ),
+  // ),
   @override
   void initState() {
     super.initState();
@@ -43,31 +62,26 @@ class _HomeScreenState extends State<HomeScreen> {
         sort: defaultItemDropDown.toLowerCase(),
         brand: defaultBrand,
         limit: limit,
-        offset: 0);
+        offset: 0,
+        token: Provider.of<MyProvider>(context, listen: false).myToken.isEmpty
+            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+            : Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       myCars = carData;
     });
   }
 
   void fetchBrands() async {
-    List<BrandModel> brandData = await BrandApi().getAllBrands();
+    List<BrandModel> brandData = await BrandApi().getAllBrands(Provider.of<
+                MyProvider>(context, listen: false)
+            .myToken
+            .isEmpty
+        ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+        : Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       myBrands = brandData;
     });
   }
-
-  // getUiImage() async {
-  //   ByteData data = await rootBundle.load(myCars[1].img);
-  //   image = await decodeImageFromList(data.buffer.asUint8List());
-  //   await getPNG();
-  //   setState(() {
-  //     isLoaded = true;
-  //   });
-  // }
-
-  // getPNG() async {
-  //   pngBytes = await image?.toByteData(format: ui.ImageByteFormat.png);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +90,34 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.all(12.w),
         child: Column(
           children: [
-            SearchBarWidget(searchController: _searchController),
+            SearchBar(
+              controller: searchController,
+              surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
+              leading: const Icon(Icons.search),
+              hintText: 'Search',
+              hintStyle:
+                  const MaterialStatePropertyAll(TextStyle(fontSize: 18)),
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8))),
+              // onSubmitted: (query) async {
+              //   setState(() {
+              //     search = true;
+              //   });
+              //    mySearchCars = aw CarApi().fetchCars(
+              //       sort: defaultItemDropDown.toLowerCase(),
+              //       brand: defaultBrand,
+              //       limit: limit,
+              //       offset: 0,
+              //       token: Provider.of<MyProvider>(context, listen: false)
+              //               .myToken
+              //               .isEmpty
+              //           ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+              //           : Provider.of<MyProvider>(context, listen: false)
+              //               .myToken,
+              //       search: query);
+              // },
+            ),
+            // SearchBarWidget(searchController: _searchController),
             Gap(6.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,16 +144,28 @@ class _HomeScreenState extends State<HomeScreen> {
             Gap(6.h),
             Row(
               children: [
+                // hasData
+                //     ? CircularProgressIndicator(
+                //         color: Colors.white,
+                //       )
+                //     :
                 Expanded(
                     child: SizedBox(
                         height: 105,
                         child: FutureBuilder(
-                          future: BrandApi().getAllBrands(),
+                          future: BrandApi().getAllBrands(Provider.of<
+                                      MyProvider>(context, listen: false)
+                                  .myToken
+                                  .isEmpty
+                              ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                              : Provider.of<MyProvider>(context, listen: false)
+                                  .myToken),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
                               return const Text('No Data Found...');
                             }
                             if (snapshot.hasData) {
+                              //   hasData = true;
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: myBrands.length,
@@ -127,15 +180,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                           });
                                         },
                                         child: CompanyContainer(
-                                            img: brandEqual[myBrands[index].id],
+                                            img: myBrands[index].logo,
+                                            // img: brandEqual[myBrands[index].id],
                                             brandName: myBrands[index].name),
                                       ));
                                 },
                               );
                             }
-                            return const CircularProgressIndicator();
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ));
                           },
-                        ))),
+                        )))
+                // : Center(
+                //     child: CircularProgressIndicator(
+                //       color: Colors.white,
+                //     ),
+                //   ),
               ],
             ),
             Gap(
@@ -190,35 +252,68 @@ class _HomeScreenState extends State<HomeScreen> {
               10,
             ),
             FutureBuilder(
-              future: CarApi().fetchCars(limit: 20, offset: 0),
+              future: CarApi().fetchCars(
+                  limit: 20,
+                  offset: 0,
+                  token: Provider.of<MyProvider>(context, listen: false)
+                          .myToken
+                          .isEmpty
+                      ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                      : Provider.of<MyProvider>(context, listen: false)
+                          .myToken),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: myCars.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return ModelDetailsScreen(
-                                carModel: myCars[index],
-                              );
-                            },
-                          ));
-                        },
-                        child: Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: ModelContainer(
-                                brandImage: brandEqual[myCars[index].brandId],
-                                speed: myCars[index].topSpeed,
-                                image: myCars[index].img,
-                                model: myCars[index].name,
-                                price: myCars[index].price.toString()))),
-                  );
+                  return AnimationLimiter(
+                      child: ListView.builder(
+                          itemCount: myCars.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 375),
+                                  child: SlideAnimation(
+                                      duration: const Duration(seconds: 2),
+                                      verticalOffset: 50.0,
+                                      child: FadeInAnimation(
+                                          child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                            builder: (context) {
+                                              return ModelDetailsScreen(
+                                                productionYears: myCars[index]
+                                                    .yearsOfProduction,
+                                                listImage:
+                                                    myCars[index].listImage,
+                                                carModel: myCars[index],
+                                              );
+                                            },
+                                          ));
+                                        },
+                                        child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: ModelContainer(
+                                                // fuel:
+                                                //     "${myCars[index].fuel.substring(0, 1)}...",
+                                                fuel: myCars[index].fuel,
+                                                brandImage:
+                                                    myBrands[index].logo,
+                                                // brandImage: brandEqual[
+                                                //     myCars[index].brandId],
+                                                speed: myCars[index].topSpeed,
+                                                image:
+                                                    myCars[index].listImage[0],
+                                                model: myCars[index].name,
+                                                price: myCars[index]
+                                                    .avgPrice
+                                                    .toString())),
+                                      ))))));
                 } else {
+                  // return shimmerContainer();
                   return const CircularProgressIndicator(
-                    color: primaryColor,
+                    color: Colors.white,
                   );
                 }
               },
@@ -370,4 +465,96 @@ class _HomeScreenState extends State<HomeScreen> {
   //     }
   //   });
   // }
+  Widget shimmerContainer() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 5, left: 5),
+      child: SizedBox(
+        height: 225.h,
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: 10.h,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white.withOpacity(0.1),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 20,
+                          color: Colors.white, // Shimmer effect color
+                        ),
+                        Container(
+                          width: 50,
+                          height: 50,
+                          color: Colors.white, // Shimmer effect color
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      height: 120.h,
+                      width: 220.w,
+                      color: Colors.white, // Shimmer effect color
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      width: 6.w,
+                    ),
+                    Container(
+                      width: 100,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Shimmer effect color
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Shimmer effect color
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Shimmer effect color
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 6.w,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

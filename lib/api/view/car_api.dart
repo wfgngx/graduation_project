@@ -8,13 +8,13 @@ class CarApi {
   Future<List<CarModel>> fetchCars(
       {String sort = "price",
       String brand = "NISSAN",
+      required String token,
       required int offset,
       required int limit}) async {
     http.Response response = await http.get(
         Uri.parse(
             "https://carify-iota.vercel.app/car?sort=$sort&brandName=$brand&offset=$offset&limit=$limit"),
-        headers: requestHeaders);
-    //'https://carify-iota.vercel.app/car?sort=$sort&brandName=$brand'),headers: requestHeaders);
+        headers: {'Content-Type': 'multipart/form-data', 'token': token});
     List<CarModel> myCars = [];
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);

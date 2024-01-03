@@ -16,7 +16,7 @@ class ModelListView extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
         child: Container(
-          height: 60.h,
+            height: 60.h,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
                 color: secondaryColor, borderRadius: BorderRadius.circular(16)),
@@ -27,7 +27,8 @@ class ModelListView extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          ModelDetailsScreen(carModel: carModel),
+                          ModelDetailsScreen(                                           productionYears: [],
+                              listImage: [], carModel: carModel),
                     ));
               },
               child: Row(

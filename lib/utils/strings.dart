@@ -1,21 +1,19 @@
+import 'package:provider/provider.dart';
+
 const String baseUrl = "https://carify-iota.vercel.app/";
 // https://carify-iota.vercel.app/brand?&offset=$offset&limit=$limit
 const String allBrands = "${baseUrl}brand?";
 const String deleteBrand = "${baseUrl}brand/";
 
 const Map<String, String> requestHeaders = {
-  // 'Content-Type': 'application/json',
   'Content-Type': 'multipart/form-data',
-
   'token':
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lZG8xMjMuYmFrZWVyQGdtYWlsLmNvbSIsImlkIjoiNjU2N2QyODZhODU0OGNmNmIyOTAxYmJlIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzAxOTIyMTc0fQ.UQpbRA7gSn0Abj-gLT6Qr3bhowecsyD1HmREncRfzuc'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhoZmpmamZqMzVAZ21haWwuY29tIiwiaWQiOiI2NTZkNDQ1NzAzNjJlZmI1YzA1MmYzNWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMxMTM4NTh9.TTt8sqJEE9JH8ycHwEA_Qy3lV_TbmwV9TSVU14jmolc'
 };
 const Map<String, String> requestHeadersGet = {
   'Content-Type': 'application/json',
-  // 'Content-Type': 'multipart/form-data',
-
   'token':
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lZG8xMjMuYmFrZWVyQGdtYWlsLmNvbSIsImlkIjoiNjU2N2QyODZhODU0OGNmNmIyOTAxYmJlIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzAxOTIyMTc0fQ.UQpbRA7gSn0Abj-gLT6Qr3bhowecsyD1HmREncRfzuc'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhoZmpmamZqMzVAZ21haWwuY29tIiwiaWQiOiI2NTZkNDQ1NzAzNjJlZmI1YzA1MmYzNWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMxMTM4NTh9.TTt8sqJEE9JH8ycHwEA_Qy3lV_TbmwV9TSVU14jmolc'
 };
 Map brandEqual = {
   '6547c2ea253bcfbdd4cc94a0': 'assets/logo_brand/Al.png',

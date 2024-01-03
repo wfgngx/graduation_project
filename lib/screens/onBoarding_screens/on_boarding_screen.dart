@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/Provider/FireBase/firebase_function.dart';
 import 'package:graduation_project/screens/auth_screen/logIn_screen.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graduation_project/screens/auth_screen/signUp_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -34,11 +37,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
+              SizedBox(height: 30.h,),
               Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 55.0.h,
                   ),
-                  child: SvgPicture.asset('assets/on_boarding/pana.svg')),
+                  child: SvgPicture.asset('assets/on_boarding/cuate.svg')),
               SizedBox(
                 height: 12.h,
               ),
@@ -64,33 +68,33 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         style: GoogleFonts.inter(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0XFF727D85)),
+                            color: const Color(0XFF3A587C)),
                       ))),
-              SizedBox(
-                height: 12.h,
-              ),
-              Center(
-                  child: InkWell(
-                onTap: () {},
-                child: Container(
-                    width: 300.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                        color: const Color(0XFF465C8D),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Center(
-                      child: Text(
-                        "Next",
-                        style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.white),
-                      ),
-                    )),
-              )),
-              const SizedBox(
-                height: 12,
-              )
+              // SizedBox(
+              //   height: 12.h,
+              // ),
+              // Center(
+              //     child: InkWell(
+              //   onTap: () {},
+              //   child: Container(
+              //       width: 300.w,
+              //       height: 40.h,
+              //       decoration: BoxDecoration(
+              //           color: const Color(0XFF465C8D),
+              //           borderRadius: BorderRadius.circular(16)),
+              //       child: Center(
+              //         child: Text(
+              //           "Next",
+              //           style: GoogleFonts.inter(
+              //               fontWeight: FontWeight.w700,
+              //               fontSize: 20,
+              //               color: Colors.white),
+              //         ),
+              //       )),
+              // )),
+              // const SizedBox(
+              //   height: 12,
+              // )
             ],
           ),
         ),
@@ -113,11 +117,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
+              SizedBox(height: 30.h,),
+
               Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 55.0.h,
                   ),
-                  child: SvgPicture.asset('assets/on_boarding/rafiki.svg')),
+                  child: SvgPicture.asset('assets/on_boarding/bro.svg')),
               SizedBox(
                 height: 12.h,
               ),
@@ -143,33 +149,33 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         style: GoogleFonts.inter(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0XFF727D85)),
+                            color: const Color(0XFF3A587C)),
                       ))),
-              SizedBox(
-                height: 12.h,
-              ),
-              Center(
-                  child: InkWell(
-                onTap: () {},
-                child: Container(
-                    width: 300.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                        color: const Color(0XFF465C8D),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Center(
-                      child: Text(
-                        "Next",
-                        style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.white),
-                      ),
-                    )),
-              )),
-              const SizedBox(
-                height: 12,
-              )
+              // SizedBox(
+              //   height: 12.h,
+              // ),
+              // Center(
+              //     child: InkWell(
+              //   onTap: () {},
+              //   child: Container(
+              //       width: 300.w,
+              //       height: 40.h,
+              //       decoration: BoxDecoration(
+              //           color: const Color(0XFF465C8D),
+              //           borderRadius: BorderRadius.circular(16)),
+              //       child: Center(
+              //         child: Text(
+              //           "Next",
+              //           style: GoogleFonts.inter(
+              //               fontWeight: FontWeight.w700,
+              //               fontSize: 20,
+              //               color: Colors.white),
+              //         ),
+              //       )),
+              // )),
+              // const SizedBox(
+              //   height: 12,
+              // )
             ],
           ),
         ),
@@ -192,11 +198,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
+              SizedBox(height: 30.h,),
+
               Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 55.0.h,
                   ),
-                  child: SvgPicture.asset('assets/on_boarding/bro.svg')),
+                  child: SvgPicture.asset('assets/on_boarding/amico.svg')),
               SizedBox(
                 height: 12.h,
               ),
@@ -222,11 +230,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         style: GoogleFonts.inter(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0XFF727D85)),
+                            color: const Color(0XFF3A587C)),
                       ))),
-              SizedBox(
-                height: 12.h,
-              ),
+              // SizedBox(
+              //   height: 12.h,
+              // ),
               // Center(
               //     child: InkWell(
               //   onTap: () {},
@@ -246,9 +254,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               //         ),
               //       )),
               // )),
-              const SizedBox(
-                height: 12,
-              )
+              // const SizedBox(
+              //   height: 12,
+              // )
             ],
           ),
         ),
@@ -286,12 +294,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Material get _signupButton {
     return Material(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          Provider.of<MyProvider>(context, listen: false).setOnBoardState();
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          bool welcomed = preferences.getBool('isWelcomed') ?? false;
+          print('Welco$welcomed');
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const LogInScreen(),
+                builder: (context) => const SignUpScreen(),
               ));
+          // Provider.of<MyProvider>(context, listen: false).setOnboardingShown();
         },
         child: const Padding(
           padding: EdgeInsets.all(8),

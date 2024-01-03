@@ -8,14 +8,14 @@ import '../api/user/user_apis.dart';
 import '../model/user_cars.dart';
 import '../utils/widgets/brand_container.dart';
 
-class SoldCars extends StatefulWidget {
-  const SoldCars({Key? key}) : super(key: key);
+class RentCars extends StatefulWidget {
+  const RentCars({Key? key}) : super(key: key);
 
   @override
-  State<SoldCars> createState() => _SoldCarsState();
+  State<RentCars> createState() => _RentCarsState();
 }
 
-class _SoldCarsState extends State<SoldCars> {
+class _RentCarsState extends State<RentCars> {
   List<UserCars> cars = [];
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _SoldCarsState extends State<SoldCars> {
   }
 
   void getCars() async {
-    List<UserCars> test = await UserApis().getCars(Provider.of<MyProvider>(
+    List<UserCars> test = await UserApis().getRentCars(Provider.of<MyProvider>(
                 context,
                 listen: false)
             .myToken
@@ -40,7 +40,7 @@ class _SoldCarsState extends State<SoldCars> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Buy a car"),
+          title: const Text("Rent a car"),
           foregroundColor: Colors.white,
           centerTitle: true,
           backgroundColor: const Color.fromRGBO(39, 55, 77, 1.0),
@@ -57,9 +57,9 @@ class _SoldCarsState extends State<SoldCars> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) =>
-                          //     InkWell(
-                          //     onLongPress: () => _showAlertDialog(cars[index].id),
-                          //     child:
+                          // InkWell(
+                          // onLongPress: () => _showAlertDialog(cars[index].id),
+                          // child:
                           ModelContainer(
                               fuel: cars[index].fuel,
                               speed: 'speed',
@@ -69,7 +69,7 @@ class _SoldCarsState extends State<SoldCars> {
                               model: cars[index].name,
                               brandImage: 'assets/images/bmw_model.png',
                               price: cars[index].price.toString())
-                      //  )
+                      //   )
                       )
                   : Center(
                       child: Padding(
@@ -87,7 +87,7 @@ class _SoldCarsState extends State<SoldCars> {
                                 height: 30.h,
                               ),
                               Text(
-                                "There are no cars to buy!",
+                                "There are no cars to rent !",
                                 style: GoogleFonts.inter(
                                     fontSize: 30,
                                     color: Colors.white,
@@ -162,18 +162,3 @@ class _SoldCarsState extends State<SoldCars> {
   //   );
   // }
 }
-// SizedBox(
-//   height: 40.h,
-// ),
-// // SearchBar(
-// //   controller: _searchController,
-// //   surfaceTintColor:
-// //       const MaterialStatePropertyAll(Colors.white),
-// //   leading: const Icon(Icons.search),
-// //   hintText: 'Search',
-// //   hintStyle:
-// //       const MaterialStatePropertyAll(TextStyle(fontSize: 18)),
-// //   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-// //       borderRadius: BorderRadius.circular(8))),
-// //   onChanged: (query) {},
-// // ),

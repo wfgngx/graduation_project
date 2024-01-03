@@ -11,13 +11,15 @@ class ModelContainer extends StatelessWidget {
       required this.image,
       required this.model,
       required this.brandImage,
-      required this.price})
+      required this.price,
+      required this.fuel})
       : super(key: key);
   String speed;
   String image;
   String price;
   String model;
   String brandImage;
+  String fuel;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class ModelContainer extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 22,
                                       color: Colors.white)),
-                              Image.asset(
+                              Image.network(
                                 brandImage,
                                 height: 50,
                                 width: 50,
@@ -76,9 +78,15 @@ class ModelContainer extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: const Color.fromRGBO(234, 233, 233, 1),
                             borderRadius: BorderRadius.circular(16)),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [Icon(Icons.event_seat), Text('5 Seats')],
+                          children: [
+                            const Icon(Icons.local_gas_station_rounded),
+                            Text(
+                              fuel,
+                              softWrap: false,
+                            )
+                          ],
                         ),
                       ),
                       // SizedBox(

@@ -36,7 +36,8 @@ class _InitialLogoScreenState extends State<InitialLogoScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const OnBoardingScreen(),
+            builder: (context) => const OnBoardingScreen(
+            ),
           ));
     });
   }

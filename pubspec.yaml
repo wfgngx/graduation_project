@@ -43,15 +43,26 @@ dependencies:
   flutter_image_compress: ^2.1.0
   color_extract: ^1.0.1+1
   google_fonts: ^6.1.0
+  pin_code_fields: ^8.0.1
   onboarding: ^3.1.0
   flutter_svg: ^2.0.9
-  dio: ^5.4.0
   gap: ^3.0.1
-  remove_background: ^0.0.1
+  flutter_pw_validator: ^1.6.0
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+  animations: ^2.0.8
+  animated_text_kit: ^4.2.2
+  flutter_staggered_animations: ^1.1.1
+  sprung: ^3.0.1
+  shimmer: ^3.0.0
+  widget_circular_animator: ^1.0.0
+  contact_picker: ^0.4.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  url_launcher: ^6.0.9
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -78,6 +89,7 @@ flutter:
      - assets/brand_last/
      - assets/logo/
      - assets/on_boarding/
+     - assets/user_cars/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
+import 'package:provider/provider.dart';
+import '../Provider/FireBase/firebase_function.dart';
 import '../api/view/car_api.dart';
 import '../model/car_model.dart';
 import '../utils/widgets/brand_container.dart';
 import 'model_details_screen.dart';
 
 class ModelsScreen extends StatefulWidget {
-  const ModelsScreen({Key? key, required this.brandName}) : super(key: key);
+  const ModelsScreen({Key? key, required this.brandName, required this.image})
+      : super(key: key);
   final String brandName;
+  final String image;
 
   @override
   State<ModelsScreen> createState() => _ModelsScreenState();
@@ -81,7 +86,10 @@ class _ModelsScreenState extends State<ModelsScreen> {
         limit: 20,
         offset: 0,
         brand: widget.brandName,
-        sort: defaultItemDropDown.toLowerCase());
+        sort: defaultItemDropDown.toLowerCase(),
+        token: Provider.of<MyProvider>(context, listen: false).myToken.isEmpty
+            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+            : Provider.of<MyProvider>(context, listen: false).myToken);
     setState(() {
       myCars = carData;
     });
@@ -157,26 +165,39 @@ class _ModelsScreenState extends State<ModelsScreen> {
                     itemCount: myCars.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return ModelDetailsScreen(
-                                  carModel: myCars[index],
-                                );
-                              },
-                            ));
-                          },
-                          child: Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: ModelContainer(
-                                brandImage: brandEqual[myCars[index].name],
-                                image: myCars[index].img,
-                                speed: myCars[index].topSpeed,
-                                model: myCars[index].name,
-                                price: myCars[index].price.toString(),
-                              )),
-                        ))
+                    itemBuilder: (context, index) =>
+                        AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                                duration: const Duration(seconds: 2),
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                    child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return ModelDetailsScreen(
+                                           productionYears: myCars[index].yearsOfProduction,
+                                          listImage: myCars[index].listImage,
+                                          carModel: myCars[index],
+                                        );
+                                      },
+                                    ));
+                                  },
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: ModelContainer(
+                                        fuel: myCars[index].fuel,
+                                        brandImage: widget.image,
+                                        // brandImage: brandEqual[myCars[index].name],
+                                        image: myCars[index].listImage[0],
+                                        speed: myCars[index].topSpeed,
+                                        model: myCars[index].name,
+                                        price: myCars[index].avgPrice.toString(),
+                                      )),
+                                )))))
               ],
             ),
           ),

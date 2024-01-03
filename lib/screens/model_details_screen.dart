@@ -1,13 +1,22 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:graduation_project/model/car_model.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
 
 import '../utils/widgets/brand_details.dart';
 
 class ModelDetailsScreen extends StatelessWidget {
-  ModelDetailsScreen({Key? key, required this.carModel}) : super(key: key);
+  ModelDetailsScreen(
+      {Key? key,
+      required this.carModel,
+      required this.listImage,
+      required this.productionYears})
+      : super(key: key);
   CarModel carModel;
+  List listImage;
+  List productionYears;
   final List<String> details = [
     'name',
     'length',
@@ -60,13 +69,36 @@ class ModelDetailsScreen extends StatelessWidget {
         body: SingleChildScrollView(
             child: Column(
           children: [
-            Image.network(
-              carModel.img,
-              fit: BoxFit.cover,
+            CarouselSlider.builder(
+              itemCount: listImage.length,
+              itemBuilder:
+                  (BuildContext context, int index, int pageViewIndex) =>
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Image.network(
+                                listImage[index],
+                                width: MediaQuery.of(context).size.width + 210,
+                                fit: BoxFit.cover,
+                              ))),
+              options: CarouselOptions(
+                autoPlay: true,
+                // animateToClosest: true,
+                autoPlayCurve: Curves.decelerate,
+                // aspectRatio: constraints.maxWidth / constraints.maxHeight,
+                // height: 300,
+                viewportFraction: .8,
+                // autoPlay: true
+              ),
             ),
-             Container(
+            // Image.network(
+            //   carModel.img,
+            //   fit: BoxFit.cover,
+            // ),
+            Container(
               padding: EdgeInsets.only(left: 10.w, top: 0.h),
-              height: 450.h,
+              // height: 600.h,
               width: double.infinity,
               decoration: const BoxDecoration(
                   color: secondaryColor,
@@ -121,7 +153,7 @@ class ModelDetailsScreen extends StatelessWidget {
                               details[9], carModel.cityFuelConsumption),
                           showBrandDetails(details[10], carModel.clyinders),
                           showBrandDetails(details[11], carModel.co2Emissions),
-                       //   showBrandDetails(details[12], carModel.createdAt),
+                          //   showBrandDetails(details[12], carModel.createdAt),
                           showBrandDetails(details[13], carModel.displacement),
                           showBrandDetails(details[14], carModel.driveType),
                           showBrandDetails(details[15], carModel.frontBreaks),
@@ -141,7 +173,7 @@ class ModelDetailsScreen extends StatelessWidget {
                               details[24], carModel.highwayFuelConsumption),
                           showBrandDetails(details[25], carModel.power),
                           showBrandDetails(
-                              details[26], carModel.price.toString()),
+                              details[26], carModel.avgPrice.toString()),
                           showBrandDetails(details[27], carModel.rearBreaks),
                           showBrandDetails(
                               details[28], carModel.sales.toString()),
@@ -149,13 +181,79 @@ class ModelDetailsScreen extends StatelessWidget {
                           showBrandDetails(details[30], carModel.topSpeed),
                           showBrandDetails(details[31], carModel.torque),
                           showBrandDetails(details[32], carModel.unladenWeight),
-                        //  showBrandDetails(details[33], carModel.updatedAt),
+                          //  showBrandDetails(details[33], carModel.updatedAt),
                           showBrandDetails(details[34], carModel.wheelBase),
                         ],
-                      ))
+                      )),
+                  SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: productionYears.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              productionYears[index].toString(),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ));
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                      itemCount: carModel.dealerShips!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  carModel.dealerShips![index].dealerShipName!,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  carModel.dealerShips![index].dealerShipPrice
+                                      .toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      launchContactWithNumber(carModel
+                                          .dealerShips![index]
+                                          .dealerShipPhone!);
+                                    },
+                                    child: const Icon(
+                                      Icons.call,
+                                      color: Colors.white,
+                                    ))
+                              ],
+                            )
+                            // Text(
+                            //   carModel.dealerShips![index].dealerShipName!,
+                            //   style: const TextStyle(
+                            //       color: Colors.white,
+                            //       fontSize: 18,
+                            //       fontWeight: FontWeight.bold),
+                            // )
+                            );
+                      },
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
         )));
   }
@@ -169,5 +267,17 @@ class ModelDetailsScreen extends StatelessWidget {
         child: BrandDetails(detail: key, test: value),
       ),
     );
+  }
+
+  void launchContactWithNumber(String phoneNumber) async {
+    final url =
+        'tel:$phoneNumber'; // Replace with the specific contact's ID or phone number
+
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      // Handle error, e.g., display an error message
+      print('Could not launch $url');
+    }
   }
 }
