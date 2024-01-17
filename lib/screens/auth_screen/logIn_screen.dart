@@ -82,7 +82,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               padding: const EdgeInsets.only(
                                   left: 15, right: 15, bottom: 10),
                               child: Card(
-                                shape: RoundedRectangleBorder(),
+                                shape: const RoundedRectangleBorder(),
                                 elevation: 5,
                                 child: TextFormField(
                                   controller: emailController,
@@ -96,13 +96,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                       fillColor: Color(0XFFF2F2F2),
                                       filled: true,
                                       border: InputBorder.none,
-                                      // isDense: true,
-                                      // focusedBorder: OutlineInputBorder(
-                                      //     borderSide:
-                                      //         BorderSide(color: Colors.green)),
-                                      // border: OutlineInputBorder(
-                                      //     borderSide:
-                                      //         BorderSide(color: Colors.red)),
                                       suffixIcon: Icon(Icons.email),
                                       label: Text("E-mail"),
                                       hintText: ("Enter your e-mail")),

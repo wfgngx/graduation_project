@@ -6,10 +6,11 @@ import '../../utils/strings.dart';
 import 'package:http_parser/http_parser.dart';
 
 class UserApis {
-  Future<String> addCar(
+  Future<Map<String, dynamic>> addCar(
       {required String carModel,
       required String userPhone,
       required String type,
+      required String durationType,
       required String carBrandName,
       required String modelYear,
       required String carPrice,
@@ -21,6 +22,7 @@ class UserApis {
       required String carLocation,
       required String carDescription,
       required List<File>? image,
+      required String topSpeed,
       required String token}) async {
     var url = "https://carify-iota.vercel.app/used-car/";
     var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -39,6 +41,9 @@ class UserApis {
     request.fields['description'] = carDescription;
     request.fields['phone'] = userPhone;
     request.fields['type'] = type;
+    request.fields['durationType'] = durationType;
+    request.fields['topSpeed'] = topSpeed;
+
     if (image != null) {
       for (var i = 0; i < image.length; i++) {
         var stream = http.ByteStream(image[i].openRead());
@@ -53,7 +58,7 @@ class UserApis {
     }
     var response = await http.Response.fromStream(await request.send());
     print(jsonDecode(response.body));
-    return response.body;
+    return jsonDecode(response.body);
   }
 
   Future<List<UserCars>> getCars(String token) async {
@@ -73,9 +78,12 @@ class UserApis {
     }
     return myCars;
   }
-  Future<List<UserCars>> getRentCars(String token) async {
+
+  Future<List<UserCars>> getRentCars(
+      {required String token, String city = ''}) async {
     http.Response response = await http.get(
-        Uri.parse("https://carify-iota.vercel.app/used-car?type=rent"),
+        Uri.parse(
+            "https://carify-iota.vercel.app/used-car?type=rent&city=$city"),
         headers: {'Content-Type': 'application/json', 'token': token});
     List<UserCars> myCars = [];
     if (response.statusCode == 200) {
@@ -121,54 +129,54 @@ class UserApis {
     return myCars;
   }
 
-  Future<String> editCarUser(
+  Future<Map<String, dynamic>> editCarUser(
       {required String token,
-      required String carModel,
-      required String userPhone,
-      required String type,
-      required String carBrandName,
-      required String modelYear,
+      // required String carModel,
+      // required String userPhone,
+      // required String type,
+      // required String carBrandName,
+      // required String modelYear,
       required String carPrice,
       required String carDistance,
-      required String carTransmission,
-      required String carDuration,
-      required String carFuel,
-      required String carCity,
-      required String carLocation,
-      required String carDescription,
-      required List<File>? image,
+      // required String carTransmission,
+      // required String carDuration,
+      // required String carFuel,
+      // required String carCity,
+      // required String carLocation,
+      // required String carDescription,
+      // required List<File>? image,
       required String id}) async {
     var url = "https://carify-iota.vercel.app/used-car/$id";
     var request = http.MultipartRequest('PATCH', Uri.parse(url));
     request.headers
         .addAll({'Content-Type': 'multipart/form-data', 'token': token});
-    request.fields['name'] = carModel;
-    request.fields['brand'] = carBrandName;
-    request.fields['year'] = modelYear;
+    // request.fields['name'] = carModel;
+    // request.fields['brand'] = carBrandName;
+    // request.fields['year'] = modelYear;
     request.fields['price'] = carPrice;
     request.fields['distance'] = carDistance;
-    request.fields['transmission'] = carTransmission;
-    request.fields['duration'] = carDuration;
-    request.fields['fuel'] = carFuel;
-    request.fields['city'] = carCity;
-    request.fields['location'] = carLocation;
-    request.fields['description'] = carDescription;
-    request.fields['phone'] = userPhone;
-    request.fields['type'] = type;
-    if (image != null) {
-      for (var i = 0; i < image.length; i++) {
-        var stream = http.ByteStream(image[i].openRead());
-        var length = await image[i].length();
-        var multipartFile = http.MultipartFile('images', stream, length,
-            filename: image[i].path.split("/").last,
-            contentType: MediaType('image', 'jpeg'));
-        request.files.add(multipartFile);
-      }
-
-      print(image);
-    }
+    // request.fields['transmission'] = carTransmission;
+    // request.fields['duration'] = carDuration;
+    // request.fields['fuel'] = carFuel;
+    // request.fields['city'] = carCity;
+    // request.fields['location'] = carLocation;
+    // request.fields['description'] = carDescription;
+    // request.fields['phone'] = userPhone;
+    // request.fields['type'] = type;
+    // if (image != null) {
+    //   for (var i = 0; i < image.length; i++) {
+    //     var stream = http.ByteStream(image[i].openRead());
+    //     var length = await image[i].length();
+    //     var multipartFile = http.MultipartFile('images', stream, length,
+    //         filename: image[i].path.split("/").last,
+    //         contentType: MediaType('image', 'jpeg'));
+    //     request.files.add(multipartFile);
+    //   }
+    //
+    //   print(image);
+    // }
     var response = await http.Response.fromStream(await request.send());
     print(response.body);
-    return response.body;
+    return jsonDecode(response.body);
   }
 }

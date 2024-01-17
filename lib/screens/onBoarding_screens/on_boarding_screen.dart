@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/Provider/FireBase/firebase_function.dart';
-import 'package:graduation_project/screens/auth_screen/logIn_screen.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graduation_project/screens/auth_screen/signUp_screen.dart';
@@ -37,10 +36,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
-              SizedBox(height: 30.h,),
+              // SizedBox(
+              //   height: 30.h,
+              // ),
               Padding(
                   padding: EdgeInsets.symmetric(
-                    vertical: 55.0.h,
+                    vertical: 0.0.h,
                   ),
                   child: SvgPicture.asset('assets/on_boarding/cuate.svg')),
               SizedBox(
@@ -52,7 +53,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inter(
                     color: const Color(0XFF465C8D),
-                    fontSize: 25.sp,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.w700),
               )),
               SizedBox(
@@ -117,7 +118,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
-              SizedBox(height: 30.h,),
+              SizedBox(
+                height: 30.h,
+              ),
 
               Padding(
                   padding: EdgeInsets.symmetric(
@@ -198,7 +201,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w700,
                             color: const Color(0XFF465C8D))),
                   )),
-              SizedBox(height: 30.h,),
+              SizedBox(
+                height: 30.h,
+              ),
 
               Padding(
                   padding: EdgeInsets.symmetric(

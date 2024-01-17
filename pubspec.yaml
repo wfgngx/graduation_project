@@ -55,8 +55,11 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   sprung: ^3.0.1
   shimmer: ^3.0.0
+  geolocator: ^7.6.2
+
+
   widget_circular_animator: ^1.0.0
-  contact_picker: ^0.4.2
+
 
 dev_dependencies:
   flutter_test:
@@ -86,10 +89,15 @@ flutter:
   assets:
      - assets/images/
      - assets/logo_brand/
+     - assets/user_cars/fav_car.jpg
      - assets/brand_last/
      - assets/logo/
      - assets/on_boarding/
      - assets/user_cars/
+     - assets/brand_last/Ellipse 3.svg
+     - assets/icons/
+     - assets/caricons/
+     - assets/caricons/icons8-car.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

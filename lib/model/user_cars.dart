@@ -13,10 +13,17 @@ class UserCars {
   String description;
   String phone;
   String type;
+  String durationType;
+  String topSpeed;
   List<CarImage> images;
+  // String firstName;
+  // String lastName;
   UserCars(
       {required this.id,
       required this.images,
+      required this.topSpeed,
+      // required this.firstName,
+      // required this.lastName,
       required this.city,
       required this.phone,
       required this.brand,
@@ -29,9 +36,12 @@ class UserCars {
       required this.description,
       required this.type,
       required this.name,
-      required this.year});
+      required this.year,
+      required this.durationType});
   factory UserCars.fromJson(Map<String, dynamic> jsonData) {
     return UserCars(
+        // firstName: jsonData['userId']['firstName'] ?? '',
+        // lastName: jsonData['userId']['lastName'] ?? '',
         id: jsonData['_id'],
         images: (jsonData['images'] as List<dynamic>)
             .map((image) => CarImage.fromJson(image))
@@ -49,7 +59,9 @@ class UserCars {
         description: jsonData['description'] ?? '',
         type: jsonData['type'] ?? '',
         name: jsonData['name'] ?? '',
-        year: jsonData['year'] ?? '');
+        year: jsonData['year'] ?? '',
+        topSpeed: jsonData['topSpeed'] ?? '',
+        durationType: jsonData['durationType'] ?? '');
   }
 }
 

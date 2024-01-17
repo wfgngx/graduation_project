@@ -19,7 +19,7 @@ class CompanyContainer extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Image.network(
+          Image.asset(
             img,
             fit: BoxFit.contain,
             width: 80,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/admin_core/screens/admin_brands_screen.dart';
 import 'package:graduation_project/screens/splash.dart';
+import 'package:graduation_project/screens/test_location.dart';
 import 'package:provider/provider.dart';
 import 'Provider/FireBase/firebase_function.dart';
 
@@ -71,6 +73,8 @@ class MyApp extends StatelessWidget {
               //   ),
               //   ),
               debugShowCheckedModeBanner: false,
+              // home: LocationScreen());
+
               home: SplashScreen());
         });
   }

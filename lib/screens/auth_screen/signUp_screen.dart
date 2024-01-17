@@ -283,7 +283,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Text("Privacy policy",
                                 style: GoogleFonts.inriaSans(
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0XFF730303))
+                                    color: const Color(0XFF730303))
                                 // TextStyle(
                                 //     fontSize: 12.sp, color: primaryColor),
                                 ),
@@ -304,7 +304,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         letterSpacing: 1.w,
                                         // fontSize: 18.sp,
                                         fontWeight: FontWeight.w700,
-                                        color: Color(0XFF154870)),
+                                        color: const Color(0XFF154870)),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(
@@ -350,15 +350,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // );
       dynamic res = await ApiAuth().createUserAccount(userData);
       if (res['success'] == true) {
+        setState(() {
+          isAuth = false;
+        });
         print(userData);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              // builder: (context) => roleController.text.trim() == "user"
-              builder: (context) =>
-                  role == "user" ? SplashScreen() : const AdminBrands(),
-            ));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(res['message'])));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       // builder: (context) => roleController.text.trim() == "user"
+        //       builder: (context) =>
+        //           role == "user" ? SplashScreen() : const AdminBrands(),
+        //     ));
       } else {
+        setState(() {
+          isAuth = false;
+        });
         print(userData);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

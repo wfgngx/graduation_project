@@ -252,7 +252,7 @@ class CarModel {
 
   String highwayFuelConsumption;
 
-  String FuelConsumptionCombined;
+  String fuelConsumptionCombined;
 
   String co2Emissions;
   List<int> yearsOfProduction;
@@ -265,9 +265,11 @@ class CarModel {
   List<DealerShips>? dealerShips;
   int? avgPrice;
   List listImage;
+  List carColors;
 
   CarModel(
-      {required this.name,
+      {required this.carColors,
+      required this.name,
       required this.length,
       required this.width,
       required this.height,
@@ -289,7 +291,7 @@ class CarModel {
       required this.fuel,
       required this.fuelCapacity,
       required this.fullSystem,
-      required this.FuelConsumptionCombined,
+      required this.fuelConsumptionCombined,
       required this.gearBox,
       required this.grossWeightLimit,
       required this.groundClearance,
@@ -311,49 +313,51 @@ class CarModel {
 
   factory CarModel.fromJson(Map<String, dynamic> jsonData) {
     return CarModel(
-      img: ImageCar.fromJson(jsonData['image']).primary ?? '',
+      carColors: jsonData['colors'] ?? [],
+      img: ImageCar.fromJson(jsonData['image']).primary ?? 'Unknown',
       listImage: ImageCar.fromJson(jsonData['image']).secondary ?? [''],
-      name: jsonData['name'] ?? '',
-      length: jsonData['length'] ?? '',
-      width: jsonData['width'] ?? '',
-      height: jsonData['height'] ?? '',
+      name: jsonData['name'] ?? 'Unknown',
+      length: jsonData['length'] ?? 'Unknown',
+      width: jsonData['width'] ?? 'Unknown',
+      height: jsonData['height'] ?? 'Unknown',
       // img: jsonData['image'] ?? '',
-      id: jsonData['_id'],
-      acceleration: jsonData["acceleration"] ?? '',
-      aerodynamics: jsonData["aerodynamics"] ?? '',
-      bodyType: jsonData['bodyType'] ?? '',
-      brandId: jsonData['brandId'] ?? '',
-      cargoVolume: jsonData['cargoVolume'] ?? '',
-      cityFuelConsumption: jsonData['cityFuelConsumption'] ?? '',
-      clyinders: jsonData['clyinders'] ?? '',
-      co2Emissions: jsonData['co2Emissions'] ?? '',
-      createdAt: jsonData['createdAt'] ?? '',
-      displacement: jsonData['displacement'] ?? '',
-      driveType: jsonData['driveType'] ?? '',
-      frontBreaks: jsonData['frontBreaks'] ?? '',
-      frontRearTrack: jsonData['frontRearTrack'] ?? '',
-      fuel: jsonData['fuel'] ?? '',
-      fuelCapacity: jsonData['fuelCapacity'] ?? '',
-      fullSystem: jsonData['fullSystem'] ?? '',
-      FuelConsumptionCombined: jsonData['FuelConsumptionCombined'] ?? '',
-      gearBox: jsonData['gearBox'] ?? '',
-      grossWeightLimit: jsonData['grossWeightLimit'] ?? '',
-      groundClearance: jsonData['groundClearance'] ?? '',
-      highwayFuelConsumption: jsonData['highwayFuelConsumption'] ?? '',
-      power: jsonData['power'] ?? '',
-      rearBreaks: jsonData['rearBreaks'] ?? '',
+      id: jsonData['_id'] ?? 'Unknown',
+      acceleration: jsonData["acceleration"] ?? 'Unknown',
+      aerodynamics: jsonData["aerodynamics"] ?? 'Unknown',
+      bodyType: jsonData['bodyType'] ?? 'Unknown',
+      brandId: jsonData['brandId'] ?? 'Unknown',
+      cargoVolume: jsonData['cargoVolume'] ?? 'Unknown',
+      cityFuelConsumption: jsonData['cityFuelConsumption'] ?? 'Unknown',
+      clyinders: jsonData['clyinders'] ?? 'Unknown',
+      co2Emissions: jsonData['co2Emissions'] ?? 'Unknown',
+      createdAt: jsonData['createdAt'] ?? 'Unknown',
+      displacement: jsonData['displacement'] ?? 'Unknown',
+      driveType: jsonData['driveType'] ?? 'Unknown',
+      frontBreaks: jsonData['frontBreaks'] ?? 'Unknown',
+      frontRearTrack: jsonData['frontRearTrack'] ?? 'Unknown',
+      fuel: jsonData['fuel'] ?? 'Unknown',
+      fuelCapacity: jsonData['fuelCapacity'] ?? 'Unknown',
+      fullSystem: jsonData['fullSystem'] ?? 'Unknown',
+      fuelConsumptionCombined: jsonData['FuelConsumptionCombined'] ?? 'Unknown',
+      gearBox: jsonData['gearBox'] ?? 'Unknown',
+      grossWeightLimit: jsonData['grossWeightLimit'] ?? 'Unknown',
+      groundClearance: jsonData['groundClearance'] ?? 'Unknown',
+      highwayFuelConsumption: jsonData['highwayFuelConsumption'] ?? 'Unknown',
+      power: jsonData['power'] ?? 'Unknown',
+      rearBreaks: jsonData['rearBreaks'] ?? 'Unknown',
       sales: jsonData['sales'] ?? 0,
-      tireSize: jsonData['tireSize'] ?? '',
+      tireSize: jsonData['tireSize'] ?? 'Unknown',
       topSpeed: jsonData['topSpeed'] ?? 'Unknown',
-      torque: jsonData['torque'] ?? '',
-      unladenWeight: jsonData['unladenWeight'] ?? '',
-      updatedAt: jsonData['updatedAt'] ?? '',
-      wheelBase: jsonData['wheelBase'] ?? '',
-      yearsOfProduction: jsonData['yearsOfProduction'].cast<int>(),
-      avgPrice: jsonData['avgPrice'],
+      torque: jsonData['torque'] ?? 'Unknown',
+      unladenWeight: jsonData['unladenWeight'] ?? 'Unknown',
+      updatedAt: jsonData['updatedAt'] ?? 'Unknown',
+      wheelBase: jsonData['wheelBase'] ?? 'Unknown',
+      yearsOfProduction: jsonData['yearsOfProduction'].cast<int>() ?? [],
+      avgPrice: jsonData['avgPrice'] ?? 0,
       dealerShips: (jsonData['dealerShips'] as List<dynamic>?)
-          ?.map((dealerShip) => DealerShips.fromJson(dealerShip))
-          .toList(),
+              ?.map((dealerShip) => DealerShips.fromJson(dealerShip))
+              .toList() ??
+          [],
     );
   }
 }
@@ -376,12 +380,16 @@ class DealerShips {
   int? dealerShipPrice;
   String? dealerShipSId;
   String? dealerShipID;
+  bool? fullOption;
+  int? stock;
 
   DealerShips(
       {this.dealerShipName,
       this.dealerShipPhone,
       this.dealerShipPrice,
       this.dealerShipSId,
+      this.fullOption,
+      this.stock,
       this.dealerShipID});
 
   DealerShips.fromJson(Map<String, dynamic> json) {
@@ -390,6 +398,8 @@ class DealerShips {
     dealerShipPrice = json['price'];
     dealerShipSId = json['_id'];
     dealerShipID = json['id'];
+    fullOption = json['isFullOption'];
+    stock = json['stock'];
   }
 }
 

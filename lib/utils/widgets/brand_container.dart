@@ -12,7 +12,8 @@ class ModelContainer extends StatelessWidget {
       required this.model,
       required this.brandImage,
       required this.price,
-      required this.fuel})
+      required this.fuel,
+      this.brandBool = true})
       : super(key: key);
   String speed;
   String image;
@@ -20,6 +21,7 @@ class ModelContainer extends StatelessWidget {
   String model;
   String brandImage;
   String fuel;
+  bool brandBool = true;
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +46,18 @@ class ModelContainer extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(model,
-                                  style: GoogleFonts.cardo(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: Colors.white)),
-                              Image.network(
-                                brandImage,
-                                height: 50,
-                                width: 50,
-                              ),
+                              Expanded(
+                                  child: Text(model,
+                                      style: GoogleFonts.cardo(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22,
+                                          color: Colors.white))),
+                              if (brandBool)
+                                Image.asset(
+                                  brandImage,
+                                  height: 50,
+                                  width: 50,
+                                ),
                             ],
                           ))),
                   Padding(
@@ -82,10 +86,11 @@ class ModelContainer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             const Icon(Icons.local_gas_station_rounded),
-                            Text(
+                            Expanded(
+                                child: Text(
                               fuel,
                               softWrap: false,
-                            )
+                            ))
                           ],
                         ),
                       ),

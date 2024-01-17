@@ -24,6 +24,9 @@ class _ModelsScreenState extends State<ModelsScreen> {
   final List<String> dropDownListItems = ['Date', 'Price', 'Sales'];
   String defaultItemDropDown = "Sales";
   int limit = 20;
+  bool search = false;
+  String searchWord = '';
+  List<CarModel> searchCars = [];
   bool isLoading = false;
   Map brandEqual = {
     'ALFA ROMEO': 'assets/logo_brand/Al.png',
@@ -100,8 +103,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            // IconButton(
-            //     onPressed: () {}, icon: const Icon(Icons.arrow_drop_down)),
             Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: DropdownButton(
@@ -147,7 +148,7 @@ class _ModelsScreenState extends State<ModelsScreen> {
                   height: 12.h,
                 ),
                 SearchBar(
-                  controller: _searchController,
+                  // controller: searchController,
                   surfaceTintColor:
                       const MaterialStatePropertyAll(Colors.white),
                   leading: const Icon(Icons.search),
@@ -156,48 +157,285 @@ class _ModelsScreenState extends State<ModelsScreen> {
                       const MaterialStatePropertyAll(TextStyle(fontSize: 18)),
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-                  onChanged: (query) {},
+                  onSubmitted: (value) async {
+                    setState(() {
+                      search = true;
+                      searchWord = value;
+                    });
+                    searchCars = await CarApi().fetchSearchSpecialCar(
+                        // sort: defaultItemDropDown.toLowerCase(),
+                        //brand: defaultBrand,
+                        // limit: limit,
+                        // offset: 0,
+                        token: Provider.of<MyProvider>(context, listen: false)
+                                .myToken
+                                .isEmpty
+                            ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                            : Provider.of<MyProvider>(context, listen: false)
+                                .myToken,
+                        search: searchWord.trim(),
+                        brandName: widget.brandName);
+                  },
+                  // onSubmitted: (query) async {
+                  //   setState(() {
+                  //     search = true;
+                  //   });
+                  //    mySearchCars = await CarApi().fetchCars(
+                  //       sort: defaultItemDropDown.toLowerCase(),
+                  //       brand: defaultBrand,
+                  //       limit: limit,
+                  //       offset: 0,
+                  //       token: Provider.of<MyProvider>(context, listen: false)
+                  //               .myToken
+                  //               .isEmpty
+                  //           ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                  //           : Provider.of<MyProvider>(context, listen: false)
+                  //               .myToken,
+                  //       search: query);
+                  // },
                 ),
+                // SearchBar(
+                //   controller: _searchController,
+                //   surfaceTintColor:
+                //       const MaterialStatePropertyAll(Colors.white),
+                //   leading: const Icon(Icons.search),
+                //   hintText: 'Search',
+                //   hintStyle:
+                //       const MaterialStatePropertyAll(TextStyle(fontSize: 18)),
+                //   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8))),
+                //   onChanged: (query) {},
+                // ),
                 SizedBox(
                   height: 12.h,
                 ),
-                ListView.builder(
-                    itemCount: myCars.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                        AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                                duration: const Duration(seconds: 2),
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                    child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) {
-                                        return ModelDetailsScreen(
-                                           productionYears: myCars[index].yearsOfProduction,
-                                          listImage: myCars[index].listImage,
-                                          carModel: myCars[index],
-                                        );
-                                      },
-                                    ));
-                                  },
-                                  child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: ModelContainer(
-                                        fuel: myCars[index].fuel,
-                                        brandImage: widget.image,
-                                        // brandImage: brandEqual[myCars[index].name],
-                                        image: myCars[index].listImage[0],
-                                        speed: myCars[index].topSpeed,
-                                        model: myCars[index].name,
-                                        price: myCars[index].avgPrice.toString(),
-                                      )),
-                                )))))
+                search
+                    ? FutureBuilder(
+                        future: CarApi().fetchSearchSpecialCar(
+                          // limit: 20,
+                          // offset: 0,
+                          brandName: widget.brandName,
+                          token: Provider.of<MyProvider>(context, listen: false)
+                                  .myToken
+                                  .isEmpty
+                              ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                              : Provider.of<MyProvider>(context, listen: false)
+                                  .myToken,
+                          search: searchWord,
+                          // sort:defaultItemDropDown.toLowerCase()
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return AnimationLimiter(
+                                child: ListView.builder(
+                                    itemCount: searchCars.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        AnimationConfiguration.staggeredList(
+                                            position: index,
+                                            duration: const Duration(
+                                                milliseconds: 375),
+                                            child: SlideAnimation(
+                                                duration:
+                                                    const Duration(seconds: 2),
+                                                verticalOffset: 50.0,
+                                                child: FadeInAnimation(
+                                                    child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return ModelDetailsScreen(
+                                                          productionYears:
+                                                              searchCars[index]
+                                                                  .yearsOfProduction,
+                                                          listImage:
+                                                              searchCars[index]
+                                                                  .listImage,
+                                                          carModel:
+                                                              searchCars[index],
+                                                        );
+                                                      },
+                                                    ));
+                                                  },
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 10),
+                                                      child: ModelContainer(
+                                                        brandBool: false,
+                                                          // fuel:
+                                                          //     "${myCars[index].fuel.substring(0, 1)}...",
+                                                          fuel:
+                                                              searchCars[index]
+                                                                  .fuel,
+                                                          brandImage:
+                                                              widget.image,
+
+                                                          // brandImage: brandEqual[
+                                                          //     myCars[index].brandId],
+                                                          speed:
+                                                              searchCars[index]
+                                                                  .topSpeed,
+                                                          image:
+                                                              searchCars[index]
+                                                                  .listImage[0],
+                                                          model:
+                                                              searchCars[index]
+                                                                  .name,
+                                                          price:
+                                                              searchCars[index]
+                                                                  .avgPrice
+                                                                  .toString())),
+                                                ))))));
+                          } else {
+                            // return shimmerContainer();
+                            return const CircularProgressIndicator(
+                              color: Colors.white,
+                            );
+                          }
+                        },
+                      )
+                    : FutureBuilder(
+                        future: CarApi().fetchCars(
+                            limit: 20,
+                            brand: widget.brandName,
+                            offset: 0,
+                            token: Provider.of<MyProvider>(context,
+                                        listen: false)
+                                    .myToken
+                                    .isEmpty
+                                ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haG1vdWR5b3Vzc2UyMjBAZ21haWwuY29tIiwiaWQiOiI2NTZkMjUwZGZmOGUyOGRmYzQzOWZmZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDMzMDg5NTN9.PdZeJaapalRJytDjIdFGLnz6RZbfUjT_LJE9eMeovRs'
+                                : Provider.of<MyProvider>(context,
+                                        listen: false)
+                                    .myToken),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return AnimationLimiter(
+                                child: ListView.builder(
+                                    itemCount: myCars.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        AnimationConfiguration.staggeredList(
+                                            position: index,
+                                            duration: const Duration(
+                                                milliseconds: 375),
+                                            child: SlideAnimation(
+                                                duration:
+                                                    const Duration(seconds: 2),
+                                                verticalOffset: 50.0,
+                                                child: FadeInAnimation(
+                                                    child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return ModelDetailsScreen(
+                                                          productionYears: myCars[
+                                                                  index]
+                                                              .yearsOfProduction,
+                                                          listImage:
+                                                              myCars[index]
+                                                                  .listImage,
+                                                          carModel:
+                                                              myCars[index],
+                                                        );
+                                                      },
+                                                    ));
+                                                  },
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 10),
+                                                      child: ModelContainer(
+                                                        fuel:
+                                                            myCars[index].fuel,
+                                                        brandImage:
+                                                            widget.image,
+                                                        // brandImage: brandEqual[myCars[index].name],
+                                                        image: myCars[index]
+                                                            .listImage[0],
+                                                        speed: myCars[index]
+                                                            .topSpeed,
+                                                        model:
+                                                            myCars[index].name,
+                                                        price: myCars[index]
+                                                            .avgPrice
+                                                            .toString(),
+                                                      )),
+                                                )))))
+
+                                // ListView.builder(
+                                //     itemCount: myCars.length,
+                                //     shrinkWrap: true,
+                                //     physics: const NeverScrollableScrollPhysics(),
+                                //     itemBuilder: (context, index) =>
+                                //         AnimationConfiguration.staggeredList(
+                                //             position: index,
+                                //             duration:
+                                //             const Duration(milliseconds: 375),
+                                //             child: SlideAnimation(
+                                //                 duration:
+                                //                 const Duration(seconds: 2),
+                                //                 verticalOffset: 50.0,
+                                //                 child: FadeInAnimation(
+                                //                     child: InkWell(
+                                //                       onTap: () {
+                                //                         Navigator.push(context,
+                                //                             MaterialPageRoute(
+                                //                               builder: (context) {
+                                //                                 return ModelDetailsScreen(
+                                //                                   productionYears: myCars[
+                                //                                   index]
+                                //                                       .yearsOfProduction,
+                                //                                   listImage: myCars[index]
+                                //                                       .listImage,
+                                //                                   carModel: myCars[index],
+                                //                                 );
+                                //                               },
+                                //                             ));
+                                //                       },
+                                //                       child: Padding(
+                                //                           padding:
+                                //                           const EdgeInsets.only(
+                                //                               bottom: 10),
+                                //                           child: ModelContainer(
+                                //                             // fuel:
+                                //                             //     "${myCars[index].fuel.substring(0, 1)}...",
+                                //                               fuel: myCars[index].fuel,
+                                //                               // brandImage:
+                                //                               //     myBrands[index].logo,
+                                //                               brandImage: brandEqual[
+                                //                               defaultBrand],
+                                //                               // brandImage: brand_equal[
+                                //                               //     myBrands[index].name],
+                                //                               speed: myCars[index]
+                                //                                   .topSpeed,
+                                //                               image: myCars[index]
+                                //                                   .listImage[0],
+                                //                               model: myCars[index].name,
+                                //                               price: myCars[index]
+                                //                                   .avgPrice
+                                //                                   .toString())),
+                                //                     )))))
+                                );
+                          } else if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator(
+                              color: Colors.white,
+                            );
+                          } else {
+                            // return shimmerContainer();
+                            return const CircularProgressIndicator(
+                              color: Colors.white,
+                            );
+                          }
+                        },
+                      )
               ],
             ),
           ),

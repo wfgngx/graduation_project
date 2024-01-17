@@ -12,8 +12,8 @@ import 'package:graduation_project/screens/bottom_nav_bar_screens/explore_cars_s
 import 'package:graduation_project/screens/bottom_nav_bar_screens/home.dart';
 import 'package:graduation_project/screens/drawer_screens/favourite.dart';
 import 'package:graduation_project/screens/drawer_screens/profile.dart';
-import 'package:graduation_project/screens/take_a_photo.dart';
-import 'package:graduation_project/screens/user_cars_screen.dart';
+import 'package:graduation_project/screens/ai/take_a_photo.dart';
+import 'package:graduation_project/screens/user_cars/user_cars_screen.dart';
 import 'package:graduation_project/utils/colors/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,7 +116,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const UserCarsScreen(),
+                          builder: (context) =>  UserCarsScreen(),
                         ));
                   },
                   leading: const Icon(
